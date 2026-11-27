@@ -1,0 +1,651 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#100f13">
+  <meta name="color-scheme" content="dark">
+  <title>METAGZ PAYMENT</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #100f13;
+      --panel: #1b181f;
+      --panel-soft: #231e26;
+      --red: #ff3d50;
+      --red-dark: #d9233b;
+      --text: #fff9fa;
+      --muted: #aaa3ad;
+      --line: #42323b;
+      --radius: 19px;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      tap-highlight-color: transparent;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--bg);
+      scrollbar-color: #69313d var(--bg);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding: max(20px, env(safe-area-inset-top)) 13px max(28px, env(safe-area-inset-bottom));
+      overflow-x: hidden;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse at 8% 0%, rgba(255, 53, 72, .14), transparent 27rem),
+        radial-gradient(ellipse at 100% 70%, rgba(255, 53, 72, .08), transparent 23rem),
+        var(--bg);
+      font-family: "DM Sans", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background: rgba(255, 61, 80, .35); color: #fff; }
+    button, a { font: inherit; color: inherit; }
+    button { appearance: none; -webkit-appearance: none; }
+    a { -webkit-tap-highlight-color: transparent; }
+
+    .page { width: min(100%, 440px); margin: 0 auto; }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 21px;
+    }
+
+    .brand { display: flex; align-items: center; gap: 9px; min-width: 0; }
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      flex: 0 0 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      color: #fff;
+      background: linear-gradient(145deg, #ff6571, #d91e37);
+      box-shadow: 0 5px 16px rgba(235, 35, 58, .25);
+      font: 800 21px "Space Grotesk", sans-serif;
+      transform: rotate(-5deg);
+    }
+    .brand-name {
+      font: 700 17px "Space Grotesk", sans-serif;
+      letter-spacing: .8px;
+      line-height: 1.05;
+    }
+    .brand-name span {
+      display: block;
+      margin-top: 3px;
+      color: var(--red);
+      font-size: 9px;
+      letter-spacing: 3.5px;
+    }
+    .secure {
+      flex: 0 0 auto;
+      padding: 7px 9px;
+      border: 1px solid #49343d;
+      border-radius: 30px;
+      color: #d8cbd0;
+      background: #21191f;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .55px;
+      white-space: nowrap;
+    }
+    .secure i { margin-right: 5px; color: #71dfa0; font-size: 7px; }
+
+    .intro { margin: 0 2px 16px; }
+    .eyebrow {
+      color: #ff7b87;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 1.8px;
+    }
+    h1 {
+      margin: 5px 0 4px;
+      font: 700 clamp(24px, 6vw, 29px) "Space Grotesk", sans-serif;
+      letter-spacing: -.8px;
+      line-height: 1.15;
+    }
+    .intro p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .tabs-shell {
+      padding: 5px;
+      border: 1px solid #45323b;
+      border-radius: 16px;
+      background: rgba(28, 24, 31, .96);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, .24);
+    }
+    .tabs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 3px; }
+    .tab {
+      min-width: 0;
+      min-height: 57px;
+      padding: 8px 2px 7px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      border: 0;
+      border-radius: 11px;
+      background: transparent;
+      color: #bcb4bf;
+      cursor: pointer;
+      font-size: clamp(9px, 2.6vw, 10px);
+      font-weight: 700;
+      line-height: 1.1;
+      white-space: nowrap;
+      transition: background .18s ease, color .18s ease, transform .18s ease;
+    }
+    .tab i { font-size: 17px; line-height: 1; }
+    .tab.active {
+      color: #fff;
+      background: linear-gradient(145deg, #ff4c5e, #d91f38);
+      box-shadow: 0 4px 13px rgba(230, 39, 59, .28);
+    }
+    .tab:active { transform: scale(.97); }
+    .tab:focus, .tab:focus-visible,
+    .copy:focus, .copy:focus-visible,
+    .testi:focus, .testi:focus-visible {
+      outline: 2px solid #ff7380;
+      outline-offset: 2px;
+    }
+
+    .payment-card {
+      position: relative;
+      isolation: isolate;
+      margin-top: 13px;
+      padding: 17px 15px 16px;
+      overflow: hidden;
+      border: 1px solid #50323d;
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, #211d24, #17151a 78%);
+      box-shadow: 0 13px 32px rgba(0, 0, 0, .3);
+    }
+    .payment-card::before {
+      position: absolute;
+      z-index: -1;
+      top: -90px;
+      right: -65px;
+      width: 170px;
+      height: 170px;
+      border: 1px solid rgba(255, 68, 87, .2);
+      box-shadow: 0 0 0 12px rgba(80, 25, 37, .22), 0 0 0 13px rgba(255, 68, 87, .12);
+      content: "";
+      transform: rotate(45deg);
+    }
+    .card-head {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      margin-bottom: 14px;
+    }
+    .method-icon {
+      width: 36px;
+      height: 36px;
+      flex: 0 0 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      color: #ff6977;
+      background: #3b1c26;
+      font-size: 16px;
+    }
+    .card-title-wrap { min-width: 0; }
+    .card-head h2 {
+      margin: 0;
+      overflow-wrap: anywhere;
+      font: 700 17px "Space Grotesk", sans-serif;
+      line-height: 1.2;
+    }
+    .card-head p {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.4;
+      overflow-wrap: anywhere;
+    }
+
+    .qr-frame {
+      position: relative;
+      width: min(100%, 218px);
+      aspect-ratio: 1;
+      margin: 0 auto 11px;
+      padding: 8px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border-radius: 15px;
+      background: #fff;
+    }
+    .qr-image { display: block; width: 100%; height: 100%; object-fit: contain; border-radius: 8px; }
+    .qr-placeholder {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      padding: 12px;
+      border: 1px dashed #bcb8bd;
+      border-radius: 9px;
+      color: #29242a;
+      background: repeating-linear-gradient(45deg, #f3f3f3 0 8px, #fff 8px 16px);
+      text-align: center;
+    }
+    .qr-placeholder i { margin-bottom: 7px; font-size: 35px; }
+    .qr-placeholder strong { display: block; font: 700 12px "Space Grotesk", sans-serif; }
+    .qr-placeholder small { display: block; max-width: 175px; margin-top: 4px; color: #777; font-size: 9px; line-height: 1.4; overflow-wrap: anywhere; }
+    .hint {
+      max-width: 290px;
+      margin: 0 auto;
+      color: #b8b0ba;
+      font-size: 11px;
+      line-height: 1.5;
+      text-align: center;
+      overflow-wrap: anywhere;
+    }
+
+    .number-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      margin-top: 7px;
+      padding: 9px;
+      border: 1px solid #453a45;
+      border-radius: 14px;
+      background: #100f13;
+    }
+    .number-icon {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      color: #ff6977;
+      background: #30202a;
+      font-size: 15px;
+    }
+    .number-content { flex: 1 1 auto; min-width: 0; }
+    .number-label {
+      display: block;
+      margin-bottom: 3px;
+      color: #aaa2ad;
+      font-size: 9px;
+      line-height: 1.3;
+      overflow-wrap: anywhere;
+    }
+    .number {
+      font: 700 clamp(14px, 4vw, 18px) "Space Grotesk", sans-serif;
+      line-height: 1.25;
+      letter-spacing: .1px;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+    .owner-name {
+      display: block;
+      margin-top: 3px;
+      color: #c6bdc8;
+      font-size: 10px;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+    .copy {
+      flex: 0 0 auto;
+      min-height: 35px;
+      padding: 0 11px;
+      border: 0;
+      border-radius: 10px;
+      color: #fff;
+      background: var(--red);
+      box-shadow: 0 4px 12px rgba(255, 53, 72, .22);
+      cursor: pointer;
+      font-size: 10px;
+      font-weight: 800;
+    }
+    .hint.after-number { margin-top: 11px; }
+
+    .testi {
+      width: 100%;
+      min-height: 47px;
+      margin-top: 14px;
+      padding: 12px 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border: 1px solid #ff5969;
+      border-radius: 14px;
+      color: #fff;
+      background: linear-gradient(100deg, #d91f36, #ff4658 55%, #c91c34);
+      box-shadow: 0 7px 19px rgba(229, 42, 60, .23);
+      text-decoration: none;
+      font: 800 12px "Space Grotesk", sans-serif;
+      letter-spacing: 1px;
+      transition: transform .18s ease;
+    }
+    .testi i { font-size: 15px; }
+    .testi:active { transform: scale(.985); }
+    .footer {
+      margin: 17px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      color: #a69da8;
+      font-size: 10px;
+      line-height: 1.4;
+      text-align: center;
+    }
+    .footer i { color: #ff6977; font-size: 13px; }
+    .toast {
+      position: fixed;
+      z-index: 5;
+      left: 50%;
+      bottom: max(20px, env(safe-area-inset-bottom));
+      max-width: calc(100vw - 30px);
+      padding: 10px 15px;
+      border: 1px solid #59414b;
+      border-radius: 30px;
+      color: #fff;
+      background: #29232b;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, .5);
+      font-size: 11px;
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 15px);
+      transition: .22s ease;
+    }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (max-width: 350px) {
+      body { padding-right: 9px; padding-left: 9px; }
+      .tab { min-height: 54px; font-size: 8px; }
+      .tab i { font-size: 15px; }
+      .payment-card { padding: 14px 11px; }
+      .number-box { gap: 6px; padding: 7px; }
+      .number-icon { width: 30px; height: 30px; flex-basis: 30px; }
+      .copy { padding: 0 8px; font-size: 9px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">M</div>
+        <div class="brand-name">METAGZ<span>PAYMENT</span></div>
+      </div>
+      <div class="secure"><i class="fa-solid fa-circle"></i> SECURE PAGE</div>
+    </header>
+
+    <section class="intro">
+      <div class="eyebrow">FUN • SIMPLE • EASY</div>
+      <h1>Payment Center<span style="color:var(--red)">.</span></h1>
+      <p>Pilih metode pembayaran yang ingin kamu gunakan.</p>
+    </section>
+
+    <nav class="tabs-shell" aria-label="Metode pembayaran">
+      <div class="tabs" role="tablist">
+        <button class="tab active" type="button" role="tab" aria-selected="true" data-method="qris"><i class="fa-solid fa-qrcode"></i><span>QRIS</span></button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-method="dana"><i class="fa-solid fa-wallet"></i><span>DANA</span></button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-method="ovo"><i class="fa-solid fa-circle-dot"></i><span>OVO</span></button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-method="gopay"><i class="fa-solid fa-money-bill-transfer"></i><span>GoPay</span></button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-method="shopeepay"><i class="fa-solid fa-bag-shopping"></i><span>ShopeePay</span></button>
+      </div>
+    </nav>
+
+    <section class="payment-card" aria-live="polite">
+      <div class="card-head">
+        <div class="method-icon" id="methodIcon"><i class="fa-solid fa-qrcode"></i></div>
+        <div class="card-title-wrap">
+          <h2 id="methodTitle">QRIS</h2>
+          <p id="methodDesc">Scan QR untuk melakukan pembayaran</p>
+        </div>
+      </div>
+      <div id="paymentContent"></div>
+    </section>
+
+    <a class="testi" id="testiLink" href="#">
+      <i class="fa-solid fa-comments"></i>
+      <span>TESTIMONI</span>
+      <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+    </a>
+
+    <footer class="footer">
+      <i class="fa-solid fa-shield-halved"></i>
+      <span>Pembayaran Aman &amp; Terpercaya</span>
+    </footer>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">Nomor berhasil disalin!</div>
+
+  <script>
+    /* =====================================================
+       METAGZ PAYMENT CONFIGURATION
+       Edit bagian ini saja untuk mengganti data pembayaran.
+       qrisImageUrl menerima URL gambar publik/direct image:
+       Telegra.ph, Catbox, imgbb, CDN, dan hosting gambar lain.
+    ====================================================== */
+    const CONFIG = {
+      qrisImageUrl: "https://d.uguu.se/gZRxfLDohEvV.jpg",
+      testimoniUrl: "https://t.me/metagzz",
+
+      payments: {
+        dana: {
+          number: "088215813888",
+          owner: "METAGZ"
+        },
+        ovo: {
+          number: "KOSONG",
+          owner: "GAADA"
+        },
+        gopay: {
+          number: "088215813888",
+          owner: "AGUNG"
+        },
+        shopeepay: {
+          number: "KOSONG",
+          owner: "GAADA"
+        }
+      }
+    };
+    /* ================= END CONFIGURATION ================= */
+
+    const METHODS = {
+      qris: {
+        title: "QRIS",
+        icon: "fa-solid fa-qrcode",
+        desc: "Scan QR untuk melakukan pembayaran",
+        type: "qris"
+      },
+      dana: {
+        title: "DANA",
+        icon: "fa-solid fa-wallet",
+        desc: "Kirim pembayaran melalui DANA",
+        type: "ewallet"
+      },
+      ovo: {
+        title: "OVO",
+        icon: "fa-solid fa-circle-dot",
+        desc: "Kirim pembayaran melalui OVO",
+        type: "ewallet"
+      },
+      gopay: {
+        title: "GoPay",
+        icon: "fa-solid fa-money-bill-transfer",
+        desc: "Kirim pembayaran melalui GoPay",
+        type: "ewallet"
+      },
+      shopeepay: {
+        title: "ShopeePay",
+        icon: "fa-solid fa-bag-shopping",
+        desc: "Kirim pembayaran melalui ShopeePay",
+        type: "ewallet"
+      }
+    };
+
+    const tabs = Array.from(document.querySelectorAll(".tab"));
+    const titleElement = document.getElementById("methodTitle");
+    const descElement = document.getElementById("methodDesc");
+    const iconElement = document.getElementById("methodIcon");
+    const contentElement = document.getElementById("paymentContent");
+    const toastElement = document.getElementById("toast");
+    let toastTimer;
+
+    function showToast(message) {
+      toastElement.textContent = message;
+      toastElement.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastElement.classList.remove("show"), 1900);
+    }
+
+    function makeQrPlaceholder() {
+      const placeholder = document.createElement("div");
+      placeholder.className = "qr-placeholder";
+      placeholder.innerHTML = `
+        <div>
+          <i class="fa-solid fa-qrcode"></i>
+          <strong>QRIS IMAGE</strong>
+          <small>Tambahkan URL gambar QRIS di CONFIG.qrisImageUrl</small>
+        </div>`;
+      return placeholder;
+    }
+
+    function renderQris() {
+      const frame = document.createElement("div");
+      frame.className = "qr-frame";
+
+      const imageUrl = String(CONFIG.qrisImageUrl || "").trim();
+      if (imageUrl && !imageUrl.includes("CONTOH-QRIS")) {
+        const image = document.createElement("img");
+        image.className = "qr-image";
+        image.alt = "Kode QRIS pembayaran METAGZ";
+        image.loading = "lazy";
+        image.src = imageUrl;
+        image.addEventListener("error", () => {
+          frame.replaceChildren(makeQrPlaceholder());
+        }, { once: true });
+        frame.appendChild(image);
+      } else {
+        frame.appendChild(makeQrPlaceholder());
+      }
+
+      const hint = document.createElement("p");
+      hint.className = "hint";
+      hint.textContent = "Buka aplikasi pembayaran, lalu scan kode QRIS di atas.";
+      contentElement.replaceChildren(frame, hint);
+    }
+
+    function renderEwallet(methodKey, method) {
+      const payment = CONFIG.payments[methodKey] || {};
+      const number = String(payment.number || "Nomor belum diatur");
+      const owner = String(payment.owner || "Nama pemilik belum diatur");
+
+      const hint = document.createElement("p");
+      hint.className = "hint";
+      hint.textContent = `Kirim pembayaran melalui ${method.title} ke nomor berikut.`;
+      hint.style.marginBottom = "10px";
+
+      const box = document.createElement("div");
+      box.className = "number-box";
+      box.innerHTML = `
+        <div class="number-icon"><i class="${method.icon}"></i></div>
+        <div class="number-content">
+          <span class="number-label">NOMOR PEMBAYARAN</span>
+          <div class="number" id="paymentNumber"></div>
+          <span class="owner-name" id="paymentOwner"></span>
+        </div>
+        <button class="copy" type="button" id="copyNumber"><i class="fa-regular fa-copy"></i> SALIN</button>`;
+      box.querySelector("#paymentNumber").textContent = number;
+      box.querySelector("#paymentOwner").textContent = owner;
+      box.querySelector("#copyNumber").addEventListener("click", () => copyText(number));
+
+      const note = document.createElement("p");
+      note.className = "hint after-number";
+      note.textContent = "Pastikan nama penerima sudah sesuai sebelum mengirim pembayaran.";
+      contentElement.replaceChildren(hint, box, note);
+    }
+
+    function render(methodKey) {
+      const method = METHODS[methodKey] || METHODS.qris;
+
+      tabs.forEach(tab => {
+        const active = tab.dataset.method === methodKey;
+        tab.classList.toggle("active", active);
+        tab.setAttribute("aria-selected", String(active));
+      });
+
+      titleElement.textContent = method.title;
+      descElement.textContent = method.desc;
+      iconElement.innerHTML = `<i class="${method.icon}"></i>`;
+
+      if (method.type === "qris") renderQris();
+      else renderEwallet(methodKey, method);
+    }
+
+    async function copyText(value) {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(value);
+        } else {
+          const temporaryInput = document.createElement("textarea");
+          temporaryInput.value = value;
+          temporaryInput.style.position = "fixed";
+          temporaryInput.style.opacity = "0";
+          document.body.appendChild(temporaryInput);
+          temporaryInput.select();
+          const copied = document.execCommand("copy");
+          temporaryInput.remove();
+          if (!copied) throw new Error("Copy command failed");
+        }
+        showToast("Nomor berhasil disalin!");
+      } catch (error) {
+        showToast("Gagal menyalin. Silakan salin manual.");
+      }
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => render(tab.dataset.method));
+    });
+
+    const testiLink = document.getElementById("testiLink");
+    if (CONFIG.testimoniUrl && !CONFIG.testimoniUrl.includes("USERNAME_TESTIMONI")) {
+      testiLink.href = CONFIG.testimoniUrl;
+      testiLink.target = "_blank";
+      testiLink.rel = "noopener noreferrer";
+    } else {
+      testiLink.addEventListener("click", event => {
+        event.preventDefault();
+        showToast("Atur link testimoni di CONFIG.testimoniUrl.");
+      });
+    }
+
+    render("qris");
+  </script>
+</body>
+</html>
